@@ -1,0 +1,1 @@
+Example app showing integration of a JSBundle written in React-Native with an iOS application
