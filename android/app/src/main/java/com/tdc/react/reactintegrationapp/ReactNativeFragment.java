@@ -36,12 +36,12 @@ public class ReactNativeFragment extends Fragment implements KeyEventListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle bundle = new Bundle();
-        bundle.putString(InstanceManager.ASSET_NAME, "tab.bundle");
+        bundle.putString(InstanceManager.ASSET_NAME, "tdc.bundle");
         bundle.putString(InstanceManager.APP_NAME, "ReactApp");
 
         mView = new ReactNativeView(getActivity(), bundle);
         mReactInstanceManager = InstanceManager.createReactInstanceManager(getActivity(), bundle);
-        mView.startReactApplication(mReactInstanceManager);
+        mView.startApplication(mReactInstanceManager);
 
         return mView;
     }

@@ -10,9 +10,6 @@ import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
 
-
-//react-native bundle --platform android --dev false --entry-file index.js --bundle-output tab.bundle --assets-dest res/
-
 public class ReactNativeActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
     private ReactNativeView mReactRootView;
@@ -24,12 +21,14 @@ public class ReactNativeActivity extends Activity implements DefaultHardwareBack
         super.onCreate(savedInstanceState);
 
         Bundle bundle = new Bundle();
-        bundle.putString(InstanceManager.ASSET_NAME, "tab.bundle");
+        bundle.putString(InstanceManager.ASSET_NAME, "tdc.bundle");
         bundle.putString(InstanceManager.APP_NAME, "ReactApp");
+
+        Bundle params = getIntent().getExtras();
 
         mReactRootView = new ReactNativeView(this, bundle);
         mReactInstanceManager = InstanceManager.createReactInstanceManager(this, bundle);
-        mReactRootView.startReactApplication(mReactInstanceManager);
+        mReactRootView.startApplication(mReactInstanceManager, params);
         setContentView(mReactRootView);
     }
 

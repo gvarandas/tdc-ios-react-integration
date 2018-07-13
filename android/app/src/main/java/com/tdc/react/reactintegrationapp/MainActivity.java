@@ -1,29 +1,29 @@
 package com.tdc.react.reactintegrationapp;
 
 import android.support.v4.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.reactnativeintegrate.ReactNativeIntegrate;
+import com.tdc.react.reactintegrationapp.data.RetrofitClient;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends KeyEventActivity {
 
-    private TextView mTextMessage;
-
     MainActivity() {
-        Map<String, Class> map = new HashMap<String, Class>();
-        map.put("INNER_ACTIVITY", InnerActivity.class);
-        ReactNativeIntegrate.setActivitiesMap(map);
+        Map<String, Class> mapActivity = new HashMap<String, Class>();
+        mapActivity.put("TALKS", TalksActivity.class);
+        ReactNativeIntegrate.setActivitiesMap(mapActivity);
+
+        Map<String, String> mapFragment = new HashMap<String, String>();
+        mapFragment.put("EVENTS", EventsFragment.class.getName());
+        ReactNativeIntegrate.setFragmentsMap(mapFragment);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -32,37 +32,22 @@ public class MainActivity extends KeyEventActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    popFragment();
+                case R.id.navigation_native:
+                    addFragment(new EventsFragment());
                     return true;
-                case R.id.navigation_dashboard:
-                   // mTextMessage.setText(R.string.title_dashboard);
-                   // startActivity(new Intent(MainActivity.this, ReactNativeActivity.class));
-                    addFragment();
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    popFragment();
+                case R.id.navigation_react:
+                    addFragment(new ReactNativeFragment());
                     return true;
             }
             return false;
         }
     };
 
-    private void addFragment() {
+    private void addFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = new ReactNativeFragment();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.frag_container, fragment).addToBackStack(null);
         transaction.commit();
-    }
-
-    private void popFragment() {
-        FragmentManager fm = getSupportFragmentManager();
-        if(fm.getBackStackEntryCount()>0) {
-            fm.popBackStack();
-        }
     }
 
     @Override
@@ -70,9 +55,11 @@ public class MainActivity extends KeyEventActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        RetrofitClient.configureAuthenticator(this);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        addFragment(new EventsFragment());
     }
 
 }

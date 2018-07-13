@@ -1,3 +1,2 @@
 include ':app'
 include ':reactNativeIntegrate'
-//project(':reactNativeIntegrate').projectDir = new File('../node_modules/reactNativeIntegrate/android')
