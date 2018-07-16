@@ -30,6 +30,7 @@ public class OAuthInterceptor implements Interceptor {
         }
 
         if (mainResponse.code() == 401 || mainResponse.code() == 403) {//Token error
+            token = null;
             if (performLogin()) {
                 mainResponse = chain.proceed(addOAuthHeader(originalRequest));
             }
